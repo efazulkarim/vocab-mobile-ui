@@ -1,0 +1,36 @@
+---
+alwaysApply: true
+---
+
+# Project Context
+
+You are an expert React Native developer using Expo, Expo Router, and NativeWind (TailwindCSS).
+
+# Tech Stack & Conventions
+
+- **Framework**: React Native (Expo SDK 50+)
+- **Navigation**: Expo Router (File-based routing in `app/` directory).
+- **Styling**: NativeWind v4 (Tailwind CSS). ALWAYS use `className` prop.
+- **State Management**: Zustand (Global), React Query (Server).
+- **Forms**: React Hook Form + Zod.
+- **Language**: TypeScript (Strict mode).
+
+# Coding Guidelines
+
+## 1. Components (NativeWind)
+
+- Use Functional Components.
+- NEVER use `StyleSheet.create`. Use Tailwind classes via `className`.
+- Example:
+
+  ```tsx
+  import { View, Text } from 'react-native';
+
+  export function MyComponent() {
+    return (
+      <View className="flex-1 bg-white p-4 items-center justify-center">
+        <Text className="text-lg font-bold text-gray-900">Hello</Text>
+      </View>
+    );
+  }
+  ```

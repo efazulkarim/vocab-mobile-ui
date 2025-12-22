@@ -84,11 +84,15 @@ export default function WordDetail() {
             <Text className="text-base font-semibold text-gray-900">
               Definition
             </Text>
-            <Text className="mt-1 text-base text-gray-700">{word.definition}</Text>
+            <Text className="mt-1 text-base text-gray-700">
+              {word.definition}
+            </Text>
           </View>
 
           <View className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <Text className="text-base font-semibold text-gray-900">Context</Text>
+            <Text className="text-base font-semibold text-gray-900">
+              Context
+            </Text>
             <Text className="mt-1 text-base italic text-gray-700">
               “{word.sentence}”
             </Text>
@@ -114,4 +118,3 @@ export default function WordDetail() {
     </SafeAreaView>
   );
 }
-

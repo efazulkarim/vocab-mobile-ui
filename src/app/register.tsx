@@ -5,12 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { TextInput, TouchableOpacity } from 'react-native';
 import { z } from 'zod';
 
-import {
-  FocusAwareStatusBar,
-  SafeAreaView,
-  Text,
-  View,
-} from '@/components/ui';
+import { FocusAwareStatusBar, SafeAreaView, Text, View } from '@/components/ui';
 import { useAuth } from '@/lib';
 
 const schema = z
@@ -70,9 +65,11 @@ export default function Register() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <FocusAwareStatusBar />
-      <View className="flex-1 justify-center px-5 space-y-8">
+      <View className="flex-1 justify-center space-y-8 px-5">
         <View className="space-y-2">
-          <Text className="text-3xl font-bold text-gray-900">Create Account</Text>
+          <Text className="text-3xl font-bold text-gray-900">
+            Create Account
+          </Text>
           <Text className="text-base text-gray-600">
             Start building your vocabulary today
           </Text>
@@ -100,12 +97,16 @@ export default function Register() {
               )}
             />
             {errors.email?.message ? (
-              <Text className="text-sm text-red-500">{errors.email.message}</Text>
+              <Text className="text-sm text-red-500">
+                {errors.email.message}
+              </Text>
             ) : null}
           </View>
 
           <View className="space-y-2">
-            <Text className="text-sm font-semibold text-gray-800">Password</Text>
+            <Text className="text-sm font-semibold text-gray-800">
+              Password
+            </Text>
             <Controller
               control={control}
               name="password"
@@ -175,4 +176,3 @@ export default function Register() {
     </SafeAreaView>
   );
 }
-

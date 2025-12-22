@@ -1,6 +1,19 @@
 module.exports = {
   white: '#ffffff',
   black: '#000000',
+  // Brand colors matching memli design
+  brand: {
+    50: '#E8EEF4',
+    100: '#C5D5E5',
+    200: '#9FB9D3',
+    300: '#789DC1',
+    400: '#5B87B3',
+    500: '#3D71A5',
+    600: '#2B5A8A',
+    700: '#1E3A5F', // Primary brand color (dark blue)
+    800: '#152B47',
+    900: '#0D1C2F',
+  },
   charcoal: {
     50: '#F2F2F2',
     100: '#E5E5E5',

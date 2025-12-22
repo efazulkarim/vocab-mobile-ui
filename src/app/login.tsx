@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useRouter } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TextInput, TouchableOpacity } from 'react-native';
 import { z } from 'zod';
 
 import { FocusAwareStatusBar, SafeAreaView, Text, View } from '@/components/ui';
+import { ArrowLeft, Eye, EyeOff } from '@/components/ui/icons';
 import { useAuth } from '@/lib';
 
 const schema = z.object({
@@ -15,31 +16,12 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-type PrimaryButtonProps = {
-  label: string;
-  onPress: () => void;
-  disabled?: boolean;
-};
-
-function PrimaryButton({ label, onPress, disabled }: PrimaryButtonProps) {
-  return (
-    <TouchableOpacity
-      activeOpacity={0.85}
-      onPress={onPress}
-      disabled={disabled}
-      className={`w-full items-center rounded-xl bg-blue-600 px-4 py-3 ${
-        disabled ? 'opacity-60' : ''
-      }`}
-    >
-      <Text className="text-base font-semibold text-white">{label}</Text>
-    </TouchableOpacity>
-  );
-}
-
 export default function Login() {
   const router = useRouter();
   const signIn = useAuth.use.signIn();
   const passwordInputRef = React.useRef<TextInput>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -51,6 +33,7 @@ export default function Login() {
 
   const handleLogin = async (values: FormValues): Promise<void> => {
     const { email, password } = values;
+    // TODO: Replace with actual API call to POST /login
     await Promise.resolve(
       signIn({ access: email.trim(), refresh: password.trim() })
     );
@@ -61,87 +44,136 @@ export default function Login() {
     passwordInputRef.current?.focus();
   };
 
+  const handleGoBack = () => {
+    router.back();
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <FocusAwareStatusBar />
-      <View className="flex-1 justify-center space-y-8 px-5">
-        <View className="space-y-2">
-          <Text className="text-3xl font-bold text-gray-900">Welcome Back</Text>
-          <Text className="text-base text-gray-600">
-            Please sign in to continue
+
+      {/* Header with back button */}
+      <View className="flex-row items-center p-4">
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={handleGoBack}
+          className="mr-4 p-2"
+          accessibilityLabel="Go back"
+        >
+          <ArrowLeft color="#1E3A5F" />
+        </TouchableOpacity>
+        <Text className="text-xl font-bold text-gray-900">
+          Login with password
+        </Text>
+      </View>
+
+      {/* Form content */}
+      <View className="flex-1 px-6 pt-4">
+        {/* Email Input */}
+        <View className="mb-6">
+          <Text className="mb-2 text-base font-semibold text-gray-900">
+            Enter Your Email Address
           </Text>
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                className="w-full rounded-xl border border-gray-300 bg-white p-4 text-base text-gray-900"
+                placeholder="user@email.com"
+                placeholderTextColor="#9ca3af"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                returnKeyType="next"
+                onSubmitEditing={focusPassword}
+              />
+            )}
+          />
+          {errors.email?.message ? (
+            <Text className="mt-1 text-sm text-red-500">
+              {errors.email.message}
+            </Text>
+          ) : null}
         </View>
 
-        <View className="space-y-4">
-          <View className="space-y-2">
-            <Text className="text-sm font-semibold text-gray-800">Email</Text>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  className="w-full rounded-xl border border-gray-200 bg-gray-100 px-4 py-3 text-base text-gray-900"
-                  placeholder="you@example.com"
-                  placeholderTextColor="#9ca3af"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  returnKeyType="next"
-                  onSubmitEditing={focusPassword}
-                />
-              )}
-            />
-            {errors.email?.message ? (
-              <Text className="text-sm text-red-500">
-                {errors.email.message}
-              </Text>
-            ) : null}
-          </View>
-
-          <View className="space-y-2">
-            <Text className="text-sm font-semibold text-gray-800">
-              Password
-            </Text>
+        {/* Password Input */}
+        <View className="mb-6">
+          <Text className="mb-2 text-base font-semibold text-gray-900">
+            Your Password
+          </Text>
+          <View className="relative">
             <Controller
               control={control}
               name="password"
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   ref={passwordInputRef}
-                  className="w-full rounded-xl border border-gray-200 bg-gray-100 px-4 py-3 text-base text-gray-900"
-                  placeholder="••••••"
+                  className="w-full rounded-xl border border-gray-300 bg-white p-4 pr-14 text-base text-gray-900"
+                  placeholder="••••••••"
                   placeholderTextColor="#9ca3af"
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
-                  secureTextEntry
+                  secureTextEntry={!showPassword}
                   returnKeyType="done"
+                  onSubmitEditing={handleSubmit(handleLogin)}
                 />
               )}
             />
-            {errors.password?.message ? (
-              <Text className="text-sm text-red-500">
-                {errors.password.message}
-              </Text>
-            ) : null}
+            {/* Eye toggle button */}
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={togglePasswordVisibility}
+              className="absolute right-4 top-4"
+              accessibilityLabel={
+                showPassword ? 'Hide password' : 'Show password'
+              }
+            >
+              {showPassword ? (
+                <EyeOff color="#6B7280" />
+              ) : (
+                <Eye color="#6B7280" />
+              )}
+            </TouchableOpacity>
           </View>
+          {errors.password?.message ? (
+            <Text className="mt-1 text-sm text-red-500">
+              {errors.password.message}
+            </Text>
+          ) : null}
         </View>
 
-        <PrimaryButton
-          label={isSubmitting ? 'Signing in...' : 'Sign In'}
+        {/* Login Button */}
+        <TouchableOpacity
+          activeOpacity={0.85}
           onPress={handleSubmit(handleLogin)}
           disabled={isSubmitting}
-        />
+          className={`w-full items-center rounded-xl bg-brand-700 px-6 py-4 ${
+            isSubmitting ? 'opacity-60' : ''
+          }`}
+        >
+          <Text className="text-base font-semibold uppercase tracking-wide text-white">
+            {isSubmitting ? 'Logging in...' : 'LOGIN'}
+          </Text>
+        </TouchableOpacity>
 
-        <View className="items-center">
+        {/* Forgot Password */}
+        <View className="mt-6 flex-row items-center justify-center">
+          <Text className="text-base text-gray-600">Forgot password? </Text>
           <Link href="/register" asChild>
-            <Text className="text-sm text-blue-600">
-              Don&apos;t have an account?{' '}
-              <Text className="font-semibold text-blue-700">Sign up</Text>
-            </Text>
+            <TouchableOpacity activeOpacity={0.7}>
+              <Text className="text-base font-medium text-brand-700">
+                click here
+              </Text>
+            </TouchableOpacity>
           </Link>
         </View>
       </View>

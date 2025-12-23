@@ -80,7 +80,7 @@ export default function Onboarding() {
   const [_, setIsFirstTime] = useIsFirstTime();
   const router = useRouter();
 
-  const handleLogin = () => router.push('/login');
+  const handleLogin = () => router.push('/sign-in');
   const handleGetStarted = () => router.push('/register');
   const handleSkip = () => {
     setIsFirstTime(false);

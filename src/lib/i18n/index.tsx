@@ -12,7 +12,7 @@ const deviceLocale = getLocales()[0]?.languageCode ?? 'en';
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: getLanguage() || deviceLocale, // TODO: if you are not supporting multiple languages or languages with multiple directions you can set the default value to `en`
+  lng: deviceLocale, // Initialize with device locale, will be updated when stored language loads
   fallbackLng: 'en',
   compatibilityJSON: 'v3', // By default React Native projects does not support Intl
 
@@ -20,6 +20,13 @@ i18n.use(initReactI18next).init({
   interpolation: {
     escapeValue: false, // escape passed in values to avoid XSS injections
   },
+});
+
+// Load stored language and update i18n
+getLanguage().then((storedLanguage) => {
+  if (storedLanguage) {
+    i18n.changeLanguage(storedLanguage);
+  }
 });
 
 // Is it a RTL language?

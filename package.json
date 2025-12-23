@@ -62,6 +62,7 @@
     "expo-system-ui": "~6.0.9",
     "i18next": "^23.16.8",
     "lodash.memoize": "^4.1.2",
+    "lucide-react-native": "^0.562.0",
     "moti": "^0.29.0",
     "nativewind": "^4.2.1",
     "react": "19.1.0",

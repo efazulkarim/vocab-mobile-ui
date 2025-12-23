@@ -1,20 +1,23 @@
-import { type Control, Controller, type FieldErrors } from 'react-hook-form';
+import {
+  type Control,
+  Controller,
+  type FieldErrors,
+  type FieldValues,
+  type Path,
+} from 'react-hook-form';
 import { TextInput } from 'react-native';
 
 import { Text, View } from '@/components/ui';
 
-interface FormValues {
-  email: string;
-  password: string;
-}
-
-interface Props {
-  control: Control<FormValues>;
-  errors: FieldErrors<FormValues>;
+interface Props<TFormValues extends FieldValues & { email: string }> {
+  control: Control<TFormValues>;
+  errors: FieldErrors<TFormValues>;
   onSubmitEditing: () => void;
 }
 
-export function EmailInput({ control, errors, onSubmitEditing }: Props) {
+export function EmailInput<
+  TFormValues extends FieldValues & { email: string },
+>({ control, errors, onSubmitEditing }: Props<TFormValues>) {
   return (
     <View className="mb-6">
       <Text className="mb-2 text-base font-semibold text-gray-900">
@@ -22,7 +25,7 @@ export function EmailInput({ control, errors, onSubmitEditing }: Props) {
       </Text>
       <Controller
         control={control}
-        name="email"
+        name={'email' as Path<TFormValues>}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             className="w-full rounded-xl border border-gray-300 bg-white p-4 text-base text-gray-900"
@@ -41,7 +44,7 @@ export function EmailInput({ control, errors, onSubmitEditing }: Props) {
       />
       {errors.email?.message ? (
         <Text className="mt-1 text-sm text-red-500">
-          {errors.email.message}
+          {errors.email.message as string}
         </Text>
       ) : null}
     </View>

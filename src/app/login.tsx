@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { type TextInput } from 'react-native';
@@ -23,7 +23,6 @@ type FormValues = z.infer<typeof schema>;
 
 export default function Login() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ email?: string }>();
   const signIn = useAuth.use.signIn();
   const passwordInputRef = React.useRef<TextInput>(null);
 
@@ -33,7 +32,7 @@ export default function Login() {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { email: params.email || '', password: '' },
+    defaultValues: { email: '', password: '' },
   });
 
   const handleLogin = async (values: FormValues): Promise<void> => {

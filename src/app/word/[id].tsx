@@ -1,120 +1,82 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { ArrowLeft } from 'lucide-react-native';
 import React, { useMemo } from 'react';
-import { Pressable } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
-import { SafeAreaView, ScrollView, Text, View } from '@/components/ui';
+import { SRSActionBar } from '@/components/features/srs-action-bar';
+import { WordDefinition } from '@/components/features/word-definition';
+import { WordHero } from '@/components/features/word-hero';
+import { SafeAreaView, View } from '@/components/ui';
 
-type WordData = {
-  word: string;
-  definition: string;
-  mnemonic: string;
-  sentence: string;
-  synonyms: string[];
-};
+// Mock data generator based on ID
+const getMockData = (id: string) => {
+  const isSerendipity = id.toLowerCase() === 'serendipity';
 
-const mockData: Record<string, WordData> = {
-  luminous: {
-    word: 'Luminous',
-    definition: 'Emitting or reflecting light; shining.',
-    mnemonic: 'Think of the moon—luminous at night.',
-    sentence: 'The luminous screen lit up the dark room.',
-    synonyms: ['bright', 'radiant', 'shining', 'glowing'],
-  },
-  concise: {
-    word: 'Concise',
-    definition: 'Giving a lot of information clearly in a few words.',
-    mnemonic: 'Con-cise like con-dense—short and clear.',
-    sentence: 'Her report was concise and easy to follow.',
-    synonyms: ['brief', 'succinct', 'compact'],
-  },
+  if (isSerendipity) {
+    return {
+      word: 'Serendipity',
+      phonetic: '/ˌserənˈdipədē/',
+      mnemonic:
+        'Think of "Seren" (serene) + "Dipity" (pity). Finding something serene and good is a happy accident!',
+      definition:
+        'The occurrence and development of events by chance in a happy or beneficial way.',
+      translation: 'Isad (Arabic) / Serendipia (Spanish)',
+      examples: [
+        'The discovery of penicillin was a stroke of serendipity.',
+        'We met by pure serendipity at the coffee shop.',
+      ],
+    };
+  }
+
+  return {
+    word: id,
+    phonetic: '/.../',
+    mnemonic: `AI is generating a mnemonic for ${id}...`,
+    definition: `Definition for ${id}`,
+    translation: `Translation for ${id}`,
+    examples: [`Example sentence for ${id}.`],
+  };
 };
 
 export default function WordDetail() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ id?: string }>();
-  const wordId = Array.isArray(params.id) ? params.id[0] : params.id;
+  const { id } = useLocalSearchParams<{ id: string }>();
 
-  const word = useMemo<WordData>(() => {
-    if (!wordId) {
-      return mockData.luminous;
-    }
-    const key = wordId.toLowerCase();
-    return (
-      mockData[key] ?? {
-        word: wordId,
-        definition: 'Definition not found yet.',
-        mnemonic: 'Create your own memory hook!',
-        sentence: `Use "${wordId}" in a sentence to remember it.`,
-        synonyms: ['to add'],
-      }
-    );
-  }, [wordId]);
+  // Handle case where id is array
+  const wordId = Array.isArray(id) ? id[0] : id;
+  const data = useMemo(() => getMockData(wordId || 'Serendipity'), [wordId]);
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView
-        className="flex-1"
-        contentContainerClassName="px-5 pb-10"
-        showsVerticalScrollIndicator={false}
-      >
-        <Pressable
-          onPress={router.back}
-          className="mb-4 mt-2 w-10 items-center justify-center rounded-full bg-gray-100 p-2"
-          accessibilityRole="button"
-          accessibilityLabel="Go back"
-        >
-          <Ionicons name="arrow-back" size={20} color="#111827" />
-        </Pressable>
-
-        <View className="items-center space-y-4">
-          <Text className="text-3xl font-bold text-gray-900">{word.word}</Text>
-
-          <View className="w-full rounded-2xl border border-amber-200 bg-amber-100 p-4">
-            <View className="mb-2 flex-row items-center gap-2">
-              <Ionicons name="bulb-outline" size={20} color="#92400e" />
-              <Text className="text-base font-semibold text-amber-900">
-                Mnemonic
-              </Text>
-            </View>
-            <Text className="text-base text-amber-900">{word.mnemonic}</Text>
-          </View>
-
-          <View className="w-full rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-            <Text className="text-base font-semibold text-gray-900">
-              Definition
-            </Text>
-            <Text className="mt-1 text-base text-gray-700">
-              {word.definition}
-            </Text>
-          </View>
-
-          <View className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <Text className="text-base font-semibold text-gray-900">
-              Context
-            </Text>
-            <Text className="mt-1 text-base italic text-gray-700">
-              “{word.sentence}”
-            </Text>
-          </View>
-
-          <View className="w-full space-y-2">
-            <Text className="text-base font-semibold text-gray-900">
-              Synonyms
-            </Text>
-            <View className="flex-row flex-wrap gap-2">
-              {word.synonyms.map((synonym) => (
-                <View
-                  key={synonym}
-                  className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1"
-                >
-                  <Text className="text-sm text-blue-700">{synonym}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
+    <View className="flex-1 bg-white dark:bg-black">
+      <SafeAreaView className="flex-1" edges={['top', 'left', 'right']}>
+        {/* Header */}
+        <View className="px-4 py-2">
+          <TouchableOpacity
+            onPress={() => router.back()}
+            className="h-10 w-10 items-center justify-center rounded-full active:bg-neutral-100 dark:active:bg-neutral-800"
+          >
+            <ArrowLeft size={24} color="#525252" />
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+
+        {/* Content */}
+        <View className="flex-1 pt-2">
+          <WordHero
+            word={data.word}
+            phonetic={data.phonetic}
+            mnemonic={data.mnemonic}
+          />
+
+          <WordDefinition
+            definition={data.definition}
+            translation={data.translation}
+            examples={data.examples}
+          />
+        </View>
+
+        {/* SRS Action Bar (Fixed at bottom) */}
+        <SRSActionBar />
+      </SafeAreaView>
+    </View>
   );
 }

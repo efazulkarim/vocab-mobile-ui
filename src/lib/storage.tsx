@@ -1,24 +1,24 @@
-import { MMKV } from 'react-native-mmkv';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const storage = new MMKV();
+export const storage = AsyncStorage;
 
-export function getItem<T>(key: string): T | null {
+export async function getItem<T>(key: string): Promise<T | null> {
   try {
-    const value = storage.getString(key);
+    const value = await storage.getItem(key);
     return value ? JSON.parse(value) : null;
   } catch {
     return null;
   }
 }
 
-export function setItem<T>(key: string, value: T): void {
-  storage.set(key, JSON.stringify(value));
+export async function setItem<T>(key: string, value: T): Promise<void> {
+  await storage.setItem(key, JSON.stringify(value));
 }
 
-export function removeItem(key: string): void {
-  storage.delete(key);
+export async function removeItem(key: string): Promise<void> {
+  await storage.removeItem(key);
 }
 
-export function clear(): void {
-  storage.clearAll();
+export async function clear(): Promise<void> {
+  await storage.clear();
 }

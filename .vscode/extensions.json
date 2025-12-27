@@ -11,6 +11,7 @@
     "bradlc.vscode-tailwindcss",
     "lokalise.i18n-ally",
     "wesbos.theme-cobalt2",
+    "astro-build.astro-vscode",
     "ChakrounAnas.turbo-console-log"
   ]
 }

@@ -1,7 +1,7 @@
-import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
+import { Redirect, SplashScreen, Tabs } from 'expo-router';
+import { useColorScheme } from 'nativewind';
 import React, { useCallback, useEffect } from 'react';
 
-import { Pressable, Text } from '@/components/ui';
 import {
   Feed as FeedIcon,
   Settings as SettingsIcon,
@@ -12,6 +12,7 @@ import { useAuth, useIsFirstTime } from '@/lib';
 export default function TabLayout() {
   const status = useAuth.use.status();
   const [isFirstTime] = useIsFirstTime();
+  const { colorScheme } = useColorScheme();
   const hideSplash = useCallback(async () => {
     await SplashScreen.hideAsync();
   }, []);
@@ -23,31 +24,51 @@ export default function TabLayout() {
     }
   }, [hideSplash, status]);
 
-  if (isFirstTime) {
-    return <Redirect href="/onboarding" />;
-  }
-  if (status === 'signOut') {
-    return <Redirect href="/login" />;
+  // Dev mode: Skip all auth checks
+  if (__DEV__) {
+    console.log('🔧 Dev Mode: Bypassing auth checks, status:', status);
+    // Still show loading while hydrating
+    if (status === 'idle') {
+      return null;
+    }
+    // Skip auth checks in dev mode, go straight to app
+  } else {
+    if (isFirstTime) {
+      return <Redirect href="/onboarding" />;
+    }
+    if (status === 'signOut') {
+      return <Redirect href="/login" />;
+    }
   }
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: '#6366f1',
+        tabBarInactiveTintColor: '#9ca3af',
+        tabBarStyle: {
+          borderTopWidth: 1,
+          borderTopColor: colorScheme === 'dark' ? '#262626' : '#e5e7eb',
+          backgroundColor: colorScheme === 'dark' ? '#171717' : '#ffffff',
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Feed',
+          title: 'Home',
+          headerShown: false,
           tabBarIcon: ({ color }) => <FeedIcon color={color} />,
-          headerRight: () => <CreateNewPostLink />,
-          tabBarButtonTestID: 'feed-tab',
+          tabBarButtonTestID: 'home-tab',
         }}
       />
 
       <Tabs.Screen
         name="style"
         options={{
-          title: 'Style',
+          title: 'Explore',
           headerShown: false,
           tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-          tabBarButtonTestID: 'style-tab',
+          tabBarButtonTestID: 'explore-tab',
         }}
       />
       <Tabs.Screen
@@ -62,13 +83,3 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-const CreateNewPostLink = () => {
-  return (
-    <Link href="/feed/add-post" asChild>
-      <Pressable>
-        <Text className="px-3 text-primary-300">Create</Text>
-      </Pressable>
-    </Link>
-  );
-};

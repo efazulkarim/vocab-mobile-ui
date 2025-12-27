@@ -16,24 +16,41 @@ const _useAuth = create<AuthState>((set, get) => ({
   status: 'idle',
   token: null,
   signIn: (token) => {
-    setToken(token);
+    setToken(token).catch(() => {
+      // Ignore storage errors, still set the state
+    });
     set({ status: 'signIn', token });
   },
   signOut: () => {
-    removeToken();
+    removeToken().catch(() => {
+      // Ignore storage errors, still set the state
+    });
     set({ status: 'signOut', token: null });
   },
   hydrate: () => {
+    // Dev mode: Just sign in immediately
+    if (__DEV__) {
+      console.log('🔧 Dev Mode: Auto-signing in (hydrate)...');
+      set({ status: 'signIn', token: { access: 'dev-token', refresh: 'dev-token' } });
+      return;
+    }
+
     try {
-      const userToken = getToken();
-      if (userToken !== null) {
-        get().signIn(userToken);
-      } else {
-        get().signOut();
-      }
+      getToken()
+        .then((userToken) => {
+          if (userToken !== null) {
+            get().signIn(userToken);
+          } else {
+            get().signOut();
+          }
+        })
+        .catch((e) => {
+          console.error('Error getting token:', e);
+          get().signOut();
+        });
     } catch (e) {
-      // catch error here
-      // Maybe sign_out user!
+      console.error('Error in hydrate:', e);
+      get().signOut();
     }
   },
 }));

@@ -3,7 +3,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { FocusAwareStatusBar, SafeAreaView, Text, View } from '@/components/ui';
-import { useIsFirstTime } from '@/lib/hooks';
+import { useAuth, useIsFirstTime } from '@/lib';
 
 type ButtonVariant = 'primary' | 'secondary' | 'link';
 
@@ -79,12 +79,24 @@ function OnboardingActions({
 export default function Onboarding() {
   const [_, setIsFirstTime] = useIsFirstTime();
   const router = useRouter();
+  const signIn = useAuth.use.signIn();
 
   const handleLogin = () => router.push('/login');
   const handleGetStarted = () => router.push('/register');
   const handleSkip = () => {
     setIsFirstTime(false);
     router.replace('/');
+  };
+
+  const handleDevSkip = async () => {
+    console.log('🔧 Dev Mode: Skipping everything...');
+    // Set both states
+    signIn({ access: 'dev-access-token', refresh: 'dev-refresh-token' });
+    await setIsFirstTime(false);
+    // Additional delay to ensure state propagates through React
+    setTimeout(() => {
+      router.replace('/');
+    }, 300);
   };
 
   return (
@@ -109,6 +121,18 @@ export default function Onboarding() {
         onGetStarted={handleGetStarted}
         onSkip={handleSkip}
       />
+      {__DEV__ && (
+        <View className="px-6 pb-4">
+          <TouchableOpacity
+            onPress={handleDevSkip}
+            className="items-center rounded-lg border-2 border-dashed border-orange-300 bg-orange-50 px-4 py-3"
+          >
+            <Text className="text-sm font-medium text-orange-700">
+              🚀 Dev Mode: Skip Everything & Go to App
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 }

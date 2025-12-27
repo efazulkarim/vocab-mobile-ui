@@ -2,6 +2,7 @@ import { Search } from 'lucide-react-native';
 import React from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 
+import { FadeInView, SlideUpCard } from '@/components/animations';
 import { DailyProgressCard } from '@/components/features/daily-progress-card';
 import { ReviewQueueCard } from '@/components/features/review-queue-card';
 import { WordCard } from '@/components/features/word-card';
@@ -34,21 +35,21 @@ export default function Home() {
       </View>
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="pt-2">
+        <FadeInView delay={100}>
           <DailyProgressCard />
-        </View>
+        </FadeInView>
 
-        <View className="mt-2">
+        <SlideUpCard delay={200}>
           <ReviewQueueCard />
-        </View>
+        </SlideUpCard>
 
-        <View className="px-4 pb-8">
+        <FadeInView delay={300} className="px-4 pb-8">
           <View className="mb-4 flex-row items-center justify-between">
             <Text className="text-xl font-bold text-neutral-900 dark:text-white">
               Recent
             </Text>
             <TouchableOpacity>
-              <Text className="text-indigo-600 dark:text-indigo-400">
+              <Text className="text-base font-semibold text-indigo-600 dark:text-indigo-400">
                 View all
               </Text>
             </TouchableOpacity>
@@ -59,16 +60,17 @@ export default function Home() {
             showsHorizontalScrollIndicator={false}
             className="-mx-4 px-4"
           >
-            {recentWords.map((item) => (
-              <WordCard
-                key={item.id}
-                word={item.word}
-                partOfSpeech={item.partOfSpeech}
-                id={item.word}
-              />
+            {recentWords.map((item, index) => (
+              <FadeInView key={item.id} delay={400 + index * 100}>
+                <WordCard
+                  word={item.word}
+                  partOfSpeech={item.partOfSpeech}
+                  id={item.word}
+                />
+              </FadeInView>
             ))}
           </ScrollView>
-        </View>
+        </FadeInView>
       </ScrollView>
     </View>
   );

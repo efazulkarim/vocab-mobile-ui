@@ -24,9 +24,9 @@ export default function Settings() {
     <>
       <FocusAwareStatusBar />
 
-      <ScrollView>
+      <ScrollView className="bg-neutral-50 dark:bg-black">
         <View className="flex-1 px-4 pt-16 ">
-          <Text className="text-xl font-bold">
+          <Text className="mb-6 text-3xl font-bold text-neutral-900 dark:text-white">
             {translate('settings.title')}
           </Text>
           <ItemsContainer title="settings.generale">

@@ -7,6 +7,7 @@ export type TokenType = {
   refresh: string;
 };
 
-export const getToken = () => getItem<TokenType>(TOKEN);
-export const removeToken = () => removeItem(TOKEN);
-export const setToken = (value: TokenType) => setItem<TokenType>(TOKEN, value);
+export const getToken = async () => await getItem<TokenType>(TOKEN);
+export const removeToken = async () => await removeItem(TOKEN);
+export const setToken = async (value: TokenType) =>
+  await setItem<TokenType>(TOKEN, value);

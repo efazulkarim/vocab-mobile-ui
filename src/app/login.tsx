@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { type TextInput } from 'react-native';
+import { TouchableOpacity, type TextInput } from 'react-native';
 import { z } from 'zod';
 
 import {
@@ -11,7 +11,7 @@ import {
   LoginHeader,
   PasswordInput,
 } from '@/components/auth';
-import { FocusAwareStatusBar, SafeAreaView, View } from '@/components/ui';
+import { FocusAwareStatusBar, SafeAreaView, Text, View } from '@/components/ui';
 import { useAuth } from '@/lib';
 
 const schema = z.object({
@@ -46,6 +46,15 @@ export default function Login() {
 
   const focusPassword = () => passwordInputRef.current?.focus();
 
+  const handleDevSkip = () => {
+    console.log('🔧 Dev Mode: Skipping auth...');
+    signIn({ access: 'dev-access-token', refresh: 'dev-refresh-token' });
+    // Use replace to avoid back navigation issues
+    setTimeout(() => {
+      router.replace('/');
+    }, 200);
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <FocusAwareStatusBar />
@@ -66,6 +75,16 @@ export default function Login() {
           isSubmitting={isSubmitting}
           onPress={handleSubmit(handleLogin)}
         />
+        {__DEV__ && (
+          <TouchableOpacity
+            onPress={handleDevSkip}
+            className="mt-4 items-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3"
+          >
+            <Text className="text-sm font-medium text-gray-600">
+              🚀 Dev Mode: Skip Auth
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );

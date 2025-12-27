@@ -6,7 +6,13 @@ import { FadeInView, SlideUpCard } from '@/components/animations';
 import { DailyProgressCard } from '@/components/features/daily-progress-card';
 import { ReviewQueueCard } from '@/components/features/review-queue-card';
 import { WordCard } from '@/components/features/word-card';
-import { FocusAwareStatusBar, Input, Text, View } from '@/components/ui';
+import {
+  FocusAwareStatusBar,
+  Input,
+  SafeAreaView,
+  Text,
+  View,
+} from '@/components/ui';
 
 const recentWords = [
   { id: '1', word: 'Serendipity', partOfSpeech: 'noun' },
@@ -22,16 +28,21 @@ export default function Home() {
       <FocusAwareStatusBar />
 
       {/* Sticky Search Header */}
-      <View className="border-b border-neutral-200 bg-white px-4 pb-4 pt-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-        <View className="relative">
-          <Input
-            placeholder="Search for new words..."
-            className="h-12 rounded-full border-none bg-neutral-100 pl-10 dark:bg-neutral-800"
-          />
-          <View className="absolute left-3 top-3">
-            <Search size={20} color="#9ca3af" />
+      {/* Sticky Search Header */}
+      <View className="border-b border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        <SafeAreaView edges={['top']}>
+          <View className="px-4 pb-4 pt-2">
+            <View className="relative">
+              <Input
+                placeholder="Search for new words..."
+                className="h-12 rounded-full border-none bg-neutral-100 pl-10 dark:bg-neutral-800"
+              />
+              <View className="absolute bottom-0 left-3 top-0 justify-center">
+                <Search size={20} color="#9ca3af" />
+              </View>
+            </View>
           </View>
-        </View>
+        </SafeAreaView>
       </View>
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>

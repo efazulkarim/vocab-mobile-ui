@@ -1,44 +1,15 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
-import React, { useMemo } from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, TouchableOpacity } from 'react-native';
 
+import { useGenerateWord } from '@/api/words';
 import { FadeInView, SlideUpCard } from '@/components/animations';
 import { SRSActionBar } from '@/components/features/srs-action-bar';
 import { WordDefinition } from '@/components/features/word-definition';
 import { WordHero } from '@/components/features/word-hero';
-import { SafeAreaView, View } from '@/components/ui';
-
-// Mock data generator based on ID
-const getMockData = (id: string) => {
-  const isSerendipity = id.toLowerCase() === 'serendipity';
-
-  if (isSerendipity) {
-    return {
-      word: 'Serendipity',
-      phonetic: '/ˌserənˈdipədē/',
-      mnemonic:
-        'Think of "Seren" (serene) + "Dipity" (pity). Finding something serene and good is a happy accident!',
-      definition:
-        'The occurrence and development of events by chance in a happy or beneficial way.',
-      translation: 'Isad (Arabic) / Serendipia (Spanish)',
-      examples: [
-        'The discovery of penicillin was a stroke of serendipity.',
-        'We met by pure serendipity at the coffee shop.',
-      ],
-    };
-  }
-
-  return {
-    word: id,
-    phonetic: '/.../',
-    mnemonic: `AI is generating a mnemonic for ${id}...`,
-    definition: `Definition for ${id}`,
-    translation: `Translation for ${id}`,
-    examples: [`Example sentence for ${id}.`],
-  };
-};
+import { SafeAreaView, Text, View } from '@/components/ui';
 
 export default function WordDetail() {
   const router = useRouter();
@@ -47,9 +18,43 @@ export default function WordDetail() {
 
   // Handle case where id is array
   const wordId = Array.isArray(id) ? id[0] : id;
-  const data = useMemo(() => getMockData(wordId || 'Serendipity'), [wordId]);
+
+  const { mutate, data, isPending, isError } = useGenerateWord();
+
+  useEffect(() => {
+    if (wordId) {
+      mutate({ word: wordId });
+    }
+  }, [wordId, mutate]);
 
   const iconColor = colorScheme === 'dark' ? '#d4d4d4' : '#525252';
+
+  // Loading state
+  if (isPending) {
+    return (
+      <View className="flex-1 items-center justify-center bg-white dark:bg-black">
+        <ActivityIndicator size="large" color="#6366f1" />
+        <Text className="mt-4 text-neutral-500">
+          Generating word details...
+        </Text>
+      </View>
+    );
+  }
+
+  // Error state
+  if (isError || !data) {
+    return (
+      <View className="flex-1 items-center justify-center bg-white dark:bg-black">
+        <Text className="text-lg text-red-500">Failed to load word</Text>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="mt-4 rounded-xl bg-neutral-100 px-6 py-3 dark:bg-neutral-800"
+        >
+          <Text className="text-neutral-900 dark:text-white">Go Back</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View className="flex-1 bg-white dark:bg-black">
@@ -69,7 +74,7 @@ export default function WordDetail() {
           <SlideUpCard delay={100}>
             <WordHero
               word={data.word}
-              phonetic={data.phonetic}
+              phonetic={data.audio_url ? '🔊' : ''}
               mnemonic={data.mnemonic}
             />
           </SlideUpCard>
@@ -77,8 +82,8 @@ export default function WordDetail() {
           <FadeInView delay={200} className="flex-1">
             <WordDefinition
               definition={data.definition}
-              translation={data.translation}
-              examples={data.examples}
+              translation={data.synonyms.join(', ') || 'No synonyms available'}
+              examples={data.sentence ? [data.sentence] : []}
             />
           </FadeInView>
         </View>

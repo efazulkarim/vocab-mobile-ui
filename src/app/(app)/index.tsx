@@ -1,18 +1,12 @@
-import { Search } from 'lucide-react-native';
 import React from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 
 import { FadeInView, SlideUpCard } from '@/components/animations';
 import { DailyProgressCard } from '@/components/features/daily-progress-card';
 import { ReviewQueueCard } from '@/components/features/review-queue-card';
+import { SearchBarWithAutocomplete } from '@/components/features/search-bar-autocomplete';
 import { WordCard } from '@/components/features/word-card';
-import {
-  FocusAwareStatusBar,
-  Input,
-  SafeAreaView,
-  Text,
-  View,
-} from '@/components/ui';
+import { FocusAwareStatusBar, SafeAreaView, Text, View } from '@/components/ui';
 
 const recentWords = [
   { id: '1', word: 'Serendipity', partOfSpeech: 'noun' },
@@ -28,19 +22,10 @@ export default function Home() {
       <FocusAwareStatusBar />
 
       {/* Sticky Search Header */}
-      {/* Sticky Search Header */}
-      <View className="border-b border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+      <View className="z-50 border-b border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
         <SafeAreaView edges={['top']}>
           <View className="px-4 pb-4 pt-2">
-            <View className="relative">
-              <Input
-                placeholder="Search for new words..."
-                className="h-12 rounded-full border-none bg-neutral-100 pl-10 dark:bg-neutral-800"
-              />
-              <View className="absolute bottom-0 left-3 top-0 justify-center">
-                <Search size={20} color="#9ca3af" />
-              </View>
-            </View>
+            <SearchBarWithAutocomplete />
           </View>
         </SafeAreaView>
       </View>

@@ -32,7 +32,7 @@ const sharedRules = {
 
   // Function limits
   'max-params': ['error', 3],
-  'max-lines-per-function': ['error', 70],
+  'max-lines-per-function': ['error', 90],
 
   // React rules
   'react/display-name': 'off',

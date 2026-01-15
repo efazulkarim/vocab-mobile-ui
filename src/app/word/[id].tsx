@@ -1,10 +1,11 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ArrowLeft } from 'lucide-react-native';
+import { ArrowLeft, Bookmark, BookmarkCheck } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
-import React, { useEffect } from 'react';
-import { ActivityIndicator, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
 
-import { useGenerateWord } from '@/api/words';
+import { useGenerateWord, useSearchWords } from '@/api/words';
+import { useAddWord } from '@/api/words/use-add-word';
 import { FadeInView, SlideUpCard } from '@/components/animations';
 import { SRSActionBar } from '@/components/features/srs-action-bar';
 import { WordDefinition } from '@/components/features/word-definition';
@@ -20,6 +21,10 @@ export default function WordDetail() {
   const wordId = Array.isArray(id) ? id[0] : id;
 
   const { mutate, data, isPending, isError } = useGenerateWord();
+  const addWordMutation = useAddWord();
+
+  const [savedWordId, setSavedWordId] = useState<string | null>(null);
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     if (wordId) {
@@ -27,7 +32,72 @@ export default function WordDetail() {
     }
   }, [wordId, mutate]);
 
+  // Helper function to fetch the word ID from the word bank
+  const fetchExistingWordId = async (word: string): Promise<string | null> => {
+    try {
+      const response = await useSearchWords.fetcher({
+        search: word,
+        page_size: 10,
+      });
+      
+      // Find exact match (case-insensitive)
+      const exactMatch = response.items.find(
+        (item) => item.word.toLowerCase() === word.toLowerCase()
+      );
+      
+      return exactMatch?.id || null;
+    } catch (error) {
+      console.error('Failed to fetch existing word ID:', error);
+      return null;
+    }
+  };
+
+  const handleSaveWord = async () => {
+    if (!data) return;
+
+    try {
+      const result = await addWordMutation.mutateAsync({
+        word: data.word,
+        definition: data.definition,
+        mnemonic: data.mnemonic,
+        sentence: data.sentence,
+        synonyms: data.synonyms,
+        audio_url: data.audio_url ?? undefined,
+      });
+
+      setSavedWordId(result.id);
+      setIsSaved(true);
+      Alert.alert(
+        'Word Saved! 📚',
+        `"${data.word}" has been added to your word bank.`
+      );
+    } catch (error: any) {
+      const message = error.response?.data?.detail || 'Failed to save word';
+      if (typeof message === 'string' && message.includes('already')) {
+        // Fetch the existing word ID so reviews can work
+        const existingWordId = await fetchExistingWordId(data.word);
+        
+        if (existingWordId) {
+          setSavedWordId(existingWordId);
+          setIsSaved(true);
+          Alert.alert(
+            'Already Saved',
+            `"${data.word}" is already in your word bank.`
+          );
+        } else {
+          Alert.alert(
+            'Error',
+            'This word already exists but could not be loaded. Please try searching for it in your word bank.'
+          );
+        }
+      } else {
+        Alert.alert('Error', 'Failed to save word. Please try again.');
+      }
+    }
+  };
+
   const iconColor = colorScheme === 'dark' ? '#d4d4d4' : '#525252';
+  const bookmarkColor = isSaved ? '#6366f1' : iconColor;
 
   // Loading state
   if (isPending) {
@@ -60,12 +130,30 @@ export default function WordDetail() {
     <View className="flex-1 bg-white dark:bg-black">
       <SafeAreaView className="flex-1" edges={['top', 'left', 'right']}>
         {/* Header */}
-        <FadeInView delay={0} className="px-4 py-2">
+        <FadeInView
+          delay={0}
+          className="flex-row items-center justify-between px-4 py-2"
+        >
           <TouchableOpacity
             onPress={() => router.back()}
             className="h-10 w-10 items-center justify-center rounded-full active:bg-neutral-100 dark:active:bg-neutral-800"
           >
             <ArrowLeft size={24} color={iconColor} />
+          </TouchableOpacity>
+
+          {/* Save/Bookmark Button */}
+          <TouchableOpacity
+            onPress={handleSaveWord}
+            disabled={addWordMutation.isPending || isSaved}
+            className={`h-10 w-10 items-center justify-center rounded-full active:bg-neutral-100 dark:active:bg-neutral-800 ${addWordMutation.isPending ? 'opacity-50' : ''}`}
+          >
+            {addWordMutation.isPending ? (
+              <ActivityIndicator size="small" color="#6366f1" />
+            ) : isSaved ? (
+              <BookmarkCheck size={24} color="#6366f1" />
+            ) : (
+              <Bookmark size={24} color={bookmarkColor} />
+            )}
           </TouchableOpacity>
         </FadeInView>
 
@@ -90,7 +178,10 @@ export default function WordDetail() {
 
         {/* SRS Action Bar (Fixed at bottom) */}
         <SlideUpCard delay={300}>
-          <SRSActionBar />
+          <SRSActionBar
+            wordId={savedWordId ?? undefined}
+            onReviewComplete={() => router.back()}
+          />
         </SlideUpCard>
       </SafeAreaView>
     </View>

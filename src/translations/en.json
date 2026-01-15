@@ -27,7 +27,16 @@
     },
     "title": "Settings",
     "version": "Version",
-    "website": "Website"
+    "website": "Website",
+    "email": "Email",
+    "name": "Name",
+    "status": "Status",
+    "not_logged_in": "Not logged in",
+    "profile": "Profile",
+    "quiz_stats": "Quiz Stats",
+    "quizzes_completed": "Quizzes Completed",
+    "average_accuracy": "Average Accuracy",
+    "best_streak": "Best Streak"
   },
   "welcome": "Welcome to obytes app site"
 }

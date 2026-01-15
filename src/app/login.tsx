@@ -2,9 +2,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { TouchableOpacity, type TextInput } from 'react-native';
+import { Alert, type TextInput, TouchableOpacity } from 'react-native';
 import { z } from 'zod';
 
+import { useLogin } from '@/api/auth';
 import {
   EmailInput,
   LoginActions,
@@ -26,22 +27,39 @@ export default function Login() {
   const signIn = useAuth.use.signIn();
   const passwordInputRef = React.useRef<TextInput>(null);
 
+  const loginMutation = useLogin();
+
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { email: '', password: '' },
   });
 
   const handleLogin = async (values: FormValues): Promise<void> => {
-    const { email, password } = values;
-    // TODO: Replace with actual API call to POST /login
-    await Promise.resolve(
-      signIn({ access: email.trim(), refresh: password.trim() })
-    );
-    router.push('/');
+    try {
+      const response = await loginMutation.mutateAsync({
+        email: values.email.trim(),
+        password: values.password,
+      });
+
+      // Store the token (using access and refresh with same value since API returns single token)
+      signIn({
+        access: response.access_token,
+        refresh: response.access_token,
+      });
+
+      router.push('/');
+    } catch (error: any) {
+      const message =
+        error.response?.data?.detail || 'Login failed. Please try again.';
+      Alert.alert(
+        'Login Error',
+        typeof message === 'string' ? message : 'Invalid credentials'
+      );
+    }
   };
 
   const focusPassword = () => passwordInputRef.current?.focus();
@@ -72,7 +90,7 @@ export default function Login() {
           onSubmitEditing={handleSubmit(handleLogin)}
         />
         <LoginActions
-          isSubmitting={isSubmitting}
+          isSubmitting={loginMutation.isPending}
           onPress={handleSubmit(handleLogin)}
         />
         {__DEV__ && (

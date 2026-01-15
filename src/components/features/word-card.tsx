@@ -6,7 +6,7 @@ import { Text } from '@/components/ui';
 
 type Props = {
   word: string;
-  partOfSpeech: string;
+  partOfSpeech?: string;
   id: string;
 };
 
@@ -17,9 +17,11 @@ export const WordCard = ({ word, partOfSpeech, id }: Props) => {
         <Text className="mb-1 text-lg font-bold text-neutral-900 dark:text-white">
           {word}
         </Text>
-        <Text className="text-sm text-neutral-500 dark:text-neutral-400">
-          {partOfSpeech}
-        </Text>
+        {partOfSpeech && (
+          <Text className="text-sm text-neutral-500 dark:text-neutral-400">
+            {partOfSpeech}
+          </Text>
+        )}
       </View>
     </Link>
   );

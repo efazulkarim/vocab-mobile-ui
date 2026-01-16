@@ -16,15 +16,8 @@ import type {
   WordPackSummary,
 } from '@/api/types';
 import { FadeInView } from '@/components/animations';
+import { ExploreCategoryTabs } from '@/components/features/explore-category-tabs';
 import { FocusAwareStatusBar, SafeAreaView, Text, View } from '@/components/ui';
-
-const CATEGORIES: { label: string; value: PackCategory | 'all' }[] = [
-  { label: 'All', value: 'all' },
-  { label: 'Exam Prep', value: 'exam_prep' },
-  { label: 'Career', value: 'career' },
-  { label: 'Academic', value: 'academic' },
-  { label: 'Casual', value: 'casual' },
-];
 
 const DIFFICULTY_COLORS: Record<PackDifficulty, { bg: string; text: string }> =
   {
@@ -130,7 +123,6 @@ function PackCard({ pack }: { pack: WordPackSummary }) {
 }
 
 export default function ExploreScreen() {
-  const { colorScheme } = useColorScheme();
   const [selectedCategory, setSelectedCategory] = useState<
     PackCategory | 'all'
   >('all');
@@ -160,32 +152,10 @@ export default function ExploreScreen() {
         </View>
 
         {/* Category Tabs */}
-        <FlatList
-          horizontal
-          data={CATEGORIES}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 12 }}
-          keyExtractor={(item) => item.value}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => setSelectedCategory(item.value)}
-              className={`mr-2 rounded-full px-4 py-2 ${
-                selectedCategory === item.value
-                  ? 'bg-indigo-600'
-                  : 'bg-neutral-100 dark:bg-neutral-800'
-              }`}
-            >
-              <Text
-                className={`text-sm font-medium ${
-                  selectedCategory === item.value
-                    ? 'text-white'
-                    : 'text-neutral-700 dark:text-neutral-300'
-                }`}
-              >
-                {item.label}
-              </Text>
-            </TouchableOpacity>
-          )}
+
+        <ExploreCategoryTabs
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
         />
       </SafeAreaView>
 

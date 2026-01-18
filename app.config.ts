@@ -52,6 +52,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: '#2E3C4B',
     },
     package: Env.PACKAGE,
+    permissions: ['INTERNET'],
+    // @ts-expect-error: 'usesCleartextTraffic' is valid in runtime but missing from the type definition
+    usesCleartextTraffic: true,
   },
   web: {
     favicon: './assets/favicon.png',

@@ -29,11 +29,6 @@ const _useAuth = create<AuthState>((set, get) => ({
   },
   hydrate: () => {
     // Dev mode: Just sign in immediately
-    if (__DEV__) {
-      console.log('🔧 Dev Mode: Auto-signing in (hydrate)...');
-      set({ status: 'signIn', token: { access: 'dev-token', refresh: 'dev-token' } });
-      return;
-    }
 
     try {
       getToken()

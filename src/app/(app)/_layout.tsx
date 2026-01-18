@@ -25,20 +25,11 @@ export default function TabLayout() {
   }, [hideSplash, status]);
 
   // Dev mode: Skip all auth checks
-  if (__DEV__) {
-    console.log('🔧 Dev Mode: Bypassing auth checks, status:', status);
-    // Still show loading while hydrating
-    if (status === 'idle') {
-      return null;
-    }
-    // Skip auth checks in dev mode, go straight to app
-  } else {
-    if (isFirstTime) {
-      return <Redirect href="/onboarding" />;
-    }
-    if (status === 'signOut') {
-      return <Redirect href="/login" />;
-    }
+  if (isFirstTime) {
+    return <Redirect href="/onboarding" />;
+  }
+  if (status === 'signOut') {
+    return <Redirect href="/login" />;
   }
   return (
     <Tabs

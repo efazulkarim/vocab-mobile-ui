@@ -25,13 +25,15 @@ export function LoginActions({ isSubmitting, onPress }: Props) {
         </Text>
       </TouchableOpacity>
 
-      {/* Forgot Password */}
+      {/* Forgot Password / Register */}
       <View className="mt-6 flex-row items-center justify-center">
-        <Text className="text-base text-gray-600">Forgot password? </Text>
+        <Text className="text-base text-gray-600 dark:text-gray-400">
+          Don't have an account?{' '}
+        </Text>
         <Link href="/register" asChild>
           <TouchableOpacity activeOpacity={0.7}>
-            <Text className="text-base font-medium text-brand-700">
-              click here
+            <Text className="text-base font-medium text-brand-700 dark:text-brand-400">
+              Register
             </Text>
           </TouchableOpacity>
         </Link>

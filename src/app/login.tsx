@@ -1,8 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Alert, type TextInput, TouchableOpacity } from 'react-native';
+import { Alert, type TextInput } from 'react-native';
 import { z } from 'zod';
 
 import { useLogin } from '@/api/auth';
@@ -12,7 +13,7 @@ import {
   LoginHeader,
   PasswordInput,
 } from '@/components/auth';
-import { FocusAwareStatusBar, SafeAreaView, Text, View } from '@/components/ui';
+import { FocusAwareStatusBar, SafeAreaView, View } from '@/components/ui';
 import { useAuth } from '@/lib';
 
 const schema = z.object({
@@ -24,10 +25,15 @@ type FormValues = z.infer<typeof schema>;
 
 export default function Login() {
   const router = useRouter();
+  const navigation = useNavigation();
   const signIn = useAuth.use.signIn();
+  const status = useAuth.use.status();
   const passwordInputRef = React.useRef<TextInput>(null);
 
   const loginMutation = useLogin();
+
+  // Navigate to app when auth status changes to signIn
+  // Handled by Root Layout now
 
   const {
     control,
@@ -39,20 +45,26 @@ export default function Login() {
   });
 
   const handleLogin = async (values: FormValues): Promise<void> => {
+    console.log('🔄 Login attempt started...');
     try {
       const response = await loginMutation.mutateAsync({
         email: values.email.trim(),
         password: values.password,
       });
 
-      // Store the token (using access and refresh with same value since API returns single token)
+      console.log(
+        '✅ API login successful, token received:',
+        !!response.access_token
+      );
+
       signIn({
         access: response.access_token,
         refresh: response.access_token,
       });
 
-      router.push('/');
+      console.log('✅ signIn() called, status should change...');
     } catch (error: any) {
+      console.log('❌ Login error:', error.response?.data || error.message);
       const message =
         error.response?.data?.detail || 'Login failed. Please try again.';
       Alert.alert(
@@ -64,17 +76,8 @@ export default function Login() {
 
   const focusPassword = () => passwordInputRef.current?.focus();
 
-  const handleDevSkip = () => {
-    console.log('🔧 Dev Mode: Skipping auth...');
-    signIn({ access: 'dev-access-token', refresh: 'dev-refresh-token' });
-    // Use replace to avoid back navigation issues
-    setTimeout(() => {
-      router.replace('/');
-    }, 200);
-  };
-
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-white dark:bg-black">
       <FocusAwareStatusBar />
       <LoginHeader onGoBack={() => router.back()} />
       <View className="flex-1 px-6 pt-4">
@@ -93,16 +96,6 @@ export default function Login() {
           isSubmitting={loginMutation.isPending}
           onPress={handleSubmit(handleLogin)}
         />
-        {__DEV__ && (
-          <TouchableOpacity
-            onPress={handleDevSkip}
-            className="mt-4 items-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3"
-          >
-            <Text className="text-sm font-medium text-gray-600">
-              🚀 Dev Mode: Skip Auth
-            </Text>
-          </TouchableOpacity>
-        )}
       </View>
     </SafeAreaView>
   );

@@ -1,4 +1,4 @@
-import { Redirect, SplashScreen, Tabs } from 'expo-router';
+import { SplashScreen, Tabs } from 'expo-router';
 import { useColorScheme } from 'nativewind';
 import React, { useCallback, useEffect } from 'react';
 
@@ -24,13 +24,8 @@ export default function TabLayout() {
     }
   }, [hideSplash, status]);
 
-  // Dev mode: Skip all auth checks
-  if (isFirstTime) {
-    return <Redirect href="/onboarding" />;
-  }
-  if (status === 'signOut') {
-    return <Redirect href="/login" />;
-  }
+  // Auth checks handled by Root Layout
+  if (!status) return null;
   return (
     <Tabs
       screenOptions={{

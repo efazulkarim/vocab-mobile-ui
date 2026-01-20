@@ -20,7 +20,7 @@ export function EmailInput<
 >({ control, errors, onSubmitEditing }: Props<TFormValues>) {
   return (
     <View className="mb-6">
-      <Text className="mb-2 text-base font-semibold text-gray-900">
+      <Text className="mb-2 text-base font-semibold text-gray-900 dark:text-white">
         Enter Your Email Address
       </Text>
       <Controller
@@ -28,7 +28,7 @@ export function EmailInput<
         name={'email' as Path<TFormValues>}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            className="w-full rounded-xl border border-gray-300 bg-white p-4 text-base text-gray-900"
+            className="w-full rounded-xl border border-gray-300 bg-white p-4 text-base text-gray-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
             placeholder="user@email.com"
             placeholderTextColor="#9ca3af"
             onBlur={onBlur}

@@ -1,3 +1,4 @@
+import { useColorScheme } from 'nativewind';
 import React, { forwardRef, useState } from 'react';
 import { type Control, Controller, type FieldErrors } from 'react-hook-form';
 import { TextInput, TouchableOpacity } from 'react-native';
@@ -19,14 +20,17 @@ interface Props {
 export const PasswordInput = forwardRef<TextInput, Props>(
   ({ control, errors, onSubmitEditing }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
+    const { colorScheme } = useColorScheme();
 
     const togglePasswordVisibility = () => {
       setShowPassword(!showPassword);
     };
 
+    const iconColor = colorScheme === 'dark' ? '#9ca3af' : '#6B7280';
+
     return (
       <View className="mb-6">
-        <Text className="mb-2 text-base font-semibold text-gray-900">
+        <Text className="mb-2 text-base font-semibold text-gray-900 dark:text-white">
           Your Password
         </Text>
         <View className="relative">
@@ -36,7 +40,7 @@ export const PasswordInput = forwardRef<TextInput, Props>(
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
                 ref={ref}
-                className="w-full rounded-xl border border-gray-300 bg-white p-4 pr-14 text-base text-gray-900"
+                className="w-full rounded-xl border border-gray-300 bg-white p-4 pr-14 text-base text-gray-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
                 placeholder="••••••••"
                 placeholderTextColor="#9ca3af"
                 onBlur={onBlur}
@@ -57,9 +61,9 @@ export const PasswordInput = forwardRef<TextInput, Props>(
             }
           >
             {showPassword ? (
-              <EyeOff color="#6B7280" />
+              <EyeOff color={iconColor} />
             ) : (
-              <Eye color="#6B7280" />
+              <Eye color={iconColor} />
             )}
           </TouchableOpacity>
         </View>

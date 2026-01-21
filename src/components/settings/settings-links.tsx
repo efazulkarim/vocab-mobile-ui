@@ -1,9 +1,9 @@
 import { Env } from '@env';
+import { Github, Globe, LifeBuoy, Share2, Star } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 import React from 'react';
 
 import { colors } from '@/components/ui';
-import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
 
 import { Item } from './item';
 import { ItemsContainer } from './items-container';
@@ -23,17 +23,17 @@ export const SettingsLinks = () => {
       <ItemsContainer title="settings.support_us">
         <Item
           text="settings.share"
-          icon={<Share color={iconColor} />}
+          icon={<Share2 size={24} color={iconColor} />}
           onPress={() => {}}
         />
         <Item
           text="settings.rate"
-          icon={<Rate color={iconColor} />}
+          icon={<Star size={24} color={iconColor} />}
           onPress={() => {}}
         />
         <Item
           text="settings.support"
-          icon={<Support color={iconColor} />}
+          icon={<LifeBuoy size={24} color={iconColor} />}
           onPress={() => {}}
         />
       </ItemsContainer>
@@ -43,12 +43,12 @@ export const SettingsLinks = () => {
         <Item text="settings.terms" onPress={() => {}} />
         <Item
           text="settings.github"
-          icon={<Github color={iconColor} />}
+          icon={<Github size={24} color={iconColor} />}
           onPress={() => {}}
         />
         <Item
           text="settings.website"
-          icon={<Website color={iconColor} />}
+          icon={<Globe size={24} color={iconColor} />}
           onPress={() => {}}
         />
       </ItemsContainer>

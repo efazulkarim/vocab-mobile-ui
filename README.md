@@ -1,111 +1,442 @@
 <h1 align="center">
-  React Native Template 
+  <img alt="logo" src="./assets/icon.png" width="124px" style="border-radius:10px"/><br/>
+  Wordrizz - Vocabulary Learning App
 </h1>
 
-📱 A template for your next React Native project 🚀, Made with developer experience and performance first: Expo, TypeScript, TailwindCSS, Husky, Lint-Staged, expo-router, react-query, react-hook-form, I18n.
+<p align="center">
+  📚 A modern, feature-rich mobile application for mastering vocabulary through interactive learning, word packs, quizzes, and community engagement.
+</p>
 
-> React Native Starter Kit!
+<p align="center">
+  <img src="https://img.shields.io/badge/React_Native-0.81.5-61dafb?style=flat-square&logo=react" alt="React Native"/>
+  <img src="https://img.shields.io/badge/Expo-~54.0-000020?style=flat-square&logo=expo" alt="Expo"/>
+  <img src="https://img.shields.io/badge/TypeScript-5.9.3-3178c6?style=flat-square&logo=typescript" alt="TypeScript"/>
+  <img src="https://img.shields.io/badge/NativeWind-4.2.1-38bdf8?style=flat-square" alt="NativeWind"/>
+</p>
 
-## 🚀 Motivation
+---
 
-Our goal with this starter kit was to streamline the process of building React Native apps, both for our own team and for our clients. We wanted to create a resource that would allow us to create high-quality apps faster and with less effort, while ensuring that all of our projects adhere to the same code standards and architectural principles.
+## 🎯 About Wordrizz
 
-The benefits of using this starter kit are numerous. It helps our team easily switch between projects, as we can rely on a consistent foundation of code. It also allows us to focus on the business logic of each project rather than getting bogged down in boilerplate code. And, because it promotes consistency across projects, it makes it easier to maintain and scale our apps, as well as share code between teams.
+Wordrizz is a comprehensive vocabulary learning platform designed to help users expand their word knowledge through curated word packs, interactive quizzes, and an engaging community feed. Built with modern React Native technologies, it provides a seamless cross-platform experience on iOS and Android.
 
-Overall, our starter kit is designed to facilitate efficient and effective app development, helping us to bring the best possible products to our clients
+### ✨ Key Features
 
-## ✍️ Philosophy
+- **🔍 Smart Word Search** - Advanced search with autocomplete functionality
+- **📦 Word Packs** - Subscribe to curated word collections (IELTS, GRE, SAT, and more)
+- **🎯 Interactive Quizzes** - Test your knowledge with engaging quiz challenges
+- **📊 Analytics Dashboard** - Track your learning progress with detailed statistics
+- **👥 Community Feed** - Share insights and learn from other users
+- **⭐ Reviews & Ratings** - Rate and review word packs
+- **🌓 Dark Mode** - Beautiful UI with automatic theme switching
+- **🌍 Internationalization** - Multi-language support with i18next
+- **🔐 Secure Authentication** - JWT-based auth with MMKV secure storage
+- **📱 Responsive Design** - Optimized for all screen sizes
 
-When creating this starter kit, we had several guiding principles in mind::
+---
 
-- **🚀 Production-ready**: We wanted to ensure that this starter was ready for real-world use, providing a solid foundation for building production-grade apps.
-- **🥷 Developer experience and productivity**: Our focus was on creating a starter that would enhance the developer experience and increase productivity.
-- **🧩 Minimal code and dependencies**: We aimed to keep the codebase and dependencies as small as possible.
-- **💪 Well-maintained third-party libraries**: We included only well-maintained and reliable third-party libraries, to provide stability and support for our projects.
+## 🚀 Quick Start
 
-## ⭐ Key Features
+### Prerequisites
 
-- ✅ Latest Expo SDK with Custom Dev Client: Leverage the best of the Expo ecosystem while maintaining full control over your app.
-- 🎉 [TypeScript](https://www.typescriptlang.org/) for enhanced code quality and bug prevention through static type checking.
-- 💅 Minimal UI kit built with [TailwindCSS](https://www.nativewind.dev/), featuring common components essential for your app.
-- ⚙️ Multi-environment build support (Production, Staging, Development) using Expo configuration.
-- 🦊 Husky for Git Hooks: Automate your git hooks and enforce code standards.
-- 💡 Clean project structure with Absolute Imports for easier code navigation and management.
-- 🚫 Lint-staged: Run Eslint and TypeScript checks on Git staged files to maintain code quality.
-- 🗂 VSCode recommended extensions, settings, and snippets for an enhanced developer experience.
-- ☂️ Pre-installed [Expo Router](https://docs.expo.dev/router/introduction/) with examples for comprehensive app navigation.
-- 💫 Auth flow implementation using [Zustand](https://github.com/pmndrs/zustand) for state management and [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv) for secure data storage.
-- 🛠 10+ [Github Actions](https://github.com/features/actions) workflows for building, releasing, testing, and distributing your app.
-- 🔥 [React Query](https://react-query.tanstack.com/) and [axios](https://github.com/axios/axios) for efficient data fetching and state management.
-- 🧵 Robust form handling with [react-hook-form](https://react-hook-form.com/) and [zod](https://github.com/colinhacks/zod) for validation, plus keyboard handling.
-- 🎯 Localization support with [i18next](https://www.i18next.com/), including Eslint for validation.
-- 🧪 Unit testing setup with [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/).
-- 🔍 E2E testing capabilities with [Maestro](https://maestro.mobile.dev/) for comprehensive app testing.
+- [Node.js LTS release](https://nodejs.org/en/)
+- [Pnpm](https://pnpm.io/installation) (v9.12.3 or higher)
+- [Git](https://git-scm.com/)
+- [Watchman](https://facebook.github.io/watchman/docs/install) (macOS/Linux only)
+- [React Native dev environment](https://reactnative.dev/docs/environment-setup) (for native builds)
+- [Cursor](https://www.cursor.com/) or [VS Code](https://code.visualstudio.com/) with recommended extensions
 
-## Is this starter for me?
+### Installation
 
-Yes 😀
+1. **Clone the repository**
 
-This starter kit is designed to benefit a wide range of React Native developers, from beginners to experienced professionals. Here's why it might be a good fit for you:
+   ```sh
+   git clone https://github.com/efazulkarim/vocab-mobile-ui.git
+   cd vocab-mobile-ui
+   ```
 
-1. **For beginners:** It provides a solid foundation with best practices and common solutions, helping you learn industry-standard approaches to React Native development.
+2. **Install dependencies**
 
-2. **For experienced developers:** It offers a well-structured, production-ready setup that can save you time and effort in project initialization and configuration.
+   ```sh
+   pnpm install
+   ```
 
-3. **For teams:** It ensures consistency across projects and team members, making it easier to onboard new developers and maintain code quality.
+3. **Configure environment**
 
-4. **For explorers:** Even if you prefer not to use starter kits, this project can serve as a valuable reference. You can explore the codebase, documentation, and architectural decisions to gain insights and potentially adopt specific solutions for your projects.
+   ```sh
+   # Copy environment template
+   cp .env.example .env
 
-5. **For learners:** The starter kit incorporates up-to-date libraries and patterns, allowing you to familiarize yourself with current best practices in the React Native ecosystem.
+   # Update .env with your API credentials
+   ```
 
-6. **For AI-assisted development:** This starter kit works well with AI coding tools. It provides a solid structure and best practices that can guide AI-generated code. This helps ensure that AI assistance leads to high-quality, maintainable code that fits well within your project.
+4. **Start the development server**
 
-Remember, you don't have to use the entire starter kit as-is. Feel free to cherry-pick ideas, configurations, or code snippets that align with your project needs. Whether you're building a new app from scratch or looking to improve your existing development process, this starter kit can provide valuable insights and practical solutions.
+   ```sh
+   # Start Expo development server
+   pnpm start
 
-## Why Expo and not React Native CLI?
+   # Run on iOS
+   pnpm ios
 
-We have been using Expo as our main framework since the introduction of [Continuous Native Generation (CNG)](https://docs.expo.dev/workflow/continuous-native-generation/) concept and we are happy with the experience.
+   # Run on Android
+   pnpm android
+   ```
 
-I think this question is not valid anymore, especially after the last React conference when the core React native team recommended using Expo for new projects.
+---
 
-> "As of today, the only recommended community framework for React Native is Expo. Folks at Expo have been investing in the React Native ecosystem since the early days of React Native and as of today, we believe the developer experience offered by Expo is best in class." React native core team
+## 🏗️ Project Structure
 
-Still hesitating? Check out this [article](https://reactnative.dev/blog/2024/06/25/use-a-framework-to-build-react-native-apps) or this [video](https://www.youtube.com/watch?v=lifGTznLBcw), maybe this one [video](https://www.youtube.com/watch?v=ek_IdGC0G80) too.
+```
+src/
+├── api/                    # API integration & React Query hooks
+│   ├── auth/              # Authentication endpoints
+│   ├── words/             # Word search & autocomplete
+│   ├── packs/             # Word pack management
+│   ├── quiz/              # Quiz endpoints
+│   ├── posts/             # Community feed
+│   ├── reviews/           # Ratings & reviews
+│   ├── analytics/         # User statistics
+│   └── subscription/      # Pack subscriptions
+├── app/                   # Expo Router screens
+│   ├── (app)/            # Authenticated screens
+│   ├── login.tsx         # Login screen
+│   ├── register.tsx      # Registration screen
+│   └── onboarding.tsx    # Onboarding flow
+├── components/            # Reusable UI components
+├── store/                 # Zustand global state
+├── hooks/                 # Custom React hooks
+├── utils/                 # Utility functions
+├── animations/            # Reanimated animations
+└── translations/          # i18n translation files
+```
 
-## 🧑‍💻 Stay up to date
+---
 
-We are committed to continually improving our starter kit and providing the best possible resources for building React Native apps. To that end, we regularly add new features and fix any bugs that are discovered.
+## 🛠️ Tech Stack
 
-If you want to stay up to date with the latest developments in our starter kit, you can either watch the repository or hit the "star" button. This will allow you to receive notifications whenever new updates are available.
+### Core Technologies
 
-We value the feedback and contributions of our users, and we encourage you to let us know if you have any suggestions for improving our starter kit. We are always looking for ways to make it even more effective and useful for our community. So, please do not hesitate to reach out and share your thoughts with us.
+- **[React Native](https://reactnative.dev/)** - Cross-platform mobile development
+- **[Expo](https://expo.dev/)** (v54) - Development platform with EAS Build
+- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
+- **[Expo Router](https://docs.expo.dev/router/introduction/)** - File-based navigation
 
-<!-- add a gif image here  -->
+### UI & Styling
 
-## 💎 Libraries used
+- **[NativeWind](https://www.nativewind.dev/)** (v4) - Tailwind CSS for React Native
+- **[Lucide React Native](https://lucide.dev/)** - Beautiful icon library
+- **[Moti](https://moti.fyi/)** - Declarative animations
+- **[React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)** - High-performance animations
+- **[React Native Gifted Charts](https://github.com/Abhinandan-Kushwaha/react-native-gifted-charts)** - Analytics charts
 
-- [Expo](https://docs.expo.io/)
-- [Expo Router](https://docs.expo.dev/router/introduction/)
-- [Nativewind](https://www.nativewind.dev/v4/overview)
-- [Flash list](https://github.com/Shopify/flash-list)
-- [React Query](https://tanstack.com/query/v4)
-- [Axios](https://axios-http.com/docs/intro)
-- [React Hook Form](https://react-hook-form.com/)
-- [i18next](https://www.i18next.com/)
-- [zustand](https://github.com/pmndrs/zustand)
-- [React Native MMKV](https://github.com/mrousavy/react-native-mmkv)
-- [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/docs/)
-- [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/docs/)
-- [React Native Svg](https://github.com/software-mansion/react-native-svg)
-- [React Error Boundaries](https://github.com/bvaughn/react-error-boundary)
-- [Expo Image](https://docs.expo.dev/versions/unversioned/sdk/image/)
-- [React Native Keyboard Controller](https://github.com/kirillzyusko/react-native-keyboard-controller)
-- [Moti](https://moti.fyi/)
-- [React Native Safe Area Context](https://github.com/th3rdwave/react-native-safe-area-context)
-- [React Native Screens](https://github.com/software-mansion/react-native-screens)
-- [Tailwind Variants](https://www.tailwind-variants.org/)
-- [Zod](https://zod.dev/)
+### State & Data Management
 
-## 🔖 License
+- **[Zustand](https://github.com/pmndrs/zustand)** - Lightweight state management
+- **[React Query](https://tanstack.com/query)** - Server state & caching
+- **[React Query Kit](https://github.com/liaoliao666/react-query-kit)** - Query hooks utilities
+- **[Axios](https://axios-http.com/)** - HTTP client
+- **[MMKV](https://github.com/mrousavy/react-native-mmkv)** - Fast, secure storage
 
-This project is MIT licensed.
+### Forms & Validation
+
+- **[React Hook Form](https://react-hook-form.com/)** - Performant form handling
+- **[Zod](https://zod.dev/)** - TypeScript-first schema validation
+
+### Developer Experience
+
+- **[ESLint](https://eslint.org/)** - Code linting with custom rules
+- **[Prettier](https://prettier.io/)** - Code formatting
+- **[Husky](https://typicode.github.io/husky/)** - Git hooks
+- **[Lint-staged](https://github.com/lint-staged/lint-staged)** - Run linters on staged files
+- **[Jest](https://jestjs.io/)** - Unit testing
+- **[Maestro](https://maestro.mobile.dev/)** - E2E testing
+
+---
+
+## 📱 Key Features Breakdown
+
+### Authentication System
+
+- Secure JWT-based authentication
+- Registration with email verification
+- Password reset functionality
+- Persistent session with MMKV storage
+- Auto-login on app launch
+
+### Word Management
+
+- Real-time word search with debouncing
+- Smart autocomplete suggestions
+- Detailed word definitions
+- Audio pronunciations (if available)
+- Save favorite words
+
+### Word Packs
+
+- Browse curated word collections
+- Subscribe/unsubscribe to packs
+- Track learning progress
+- IELTS, GRE, SAT, and custom packs
+- Pack details with word previews
+
+### Quiz System
+
+- Multiple-choice questions
+- Timed quizzes
+- Score tracking
+- Leaderboard (weekly & monthly)
+- Detailed result analysis
+- Retry failed quizzes
+
+### Community Feed
+
+- Share vocabulary insights
+- Like and comment on posts
+- Follow other learners
+- Discover trending words
+- Community challenges
+
+### Analytics Dashboard
+
+- Learning streak tracking
+- Words learned statistics
+- Quiz performance metrics
+- Progress visualization
+- Goal setting and tracking
+
+---
+
+## 🔧 Available Scripts
+
+### Development
+
+```sh
+pnpm start              # Start Expo dev server
+pnpm ios                # Run on iOS simulator
+pnpm android            # Run on Android emulator
+pnpm web                # Run on web browser
+```
+
+### Staging Environment
+
+```sh
+pnpm start:staging
+pnpm ios:staging
+pnpm android:staging
+```
+
+### Production Environment
+
+```sh
+pnpm start:production
+pnpm ios:production
+pnpm android:production
+```
+
+### Building
+
+```sh
+# Development builds
+pnpm build:development:ios
+pnpm build:development:android
+
+# Staging builds
+pnpm build:staging:ios
+pnpm build:staging:android
+
+# Production builds
+pnpm build:production:ios
+pnpm build:production:android
+```
+
+### Quality Assurance
+
+```sh
+pnpm lint               # Run ESLint
+pnpm type-check         # Run TypeScript check
+pnpm test               # Run Jest tests
+pnpm test:watch         # Run tests in watch mode
+pnpm check-all          # Run all checks (lint + type + test)
+pnpm e2e-test           # Run Maestro E2E tests
+```
+
+---
+
+## 🌍 Multi-Environment Setup
+
+The app supports three environments:
+
+- **Development** - Local development with debug features
+- **Staging** - Pre-production testing environment
+- **Production** - Live production environment
+
+Each environment has its own:
+
+- API endpoint configuration
+- App bundle identifier
+- Environment variables
+- Build profiles
+
+---
+
+## 🎨 Design System
+
+The app follows a premium design aesthetic with:
+
+- Modern glassmorphism effects
+- Smooth micro-animations
+- Consistent color palette
+- Dark mode support
+- Responsive layouts
+- Accessible UI components
+
+---
+
+## 📚 API Integration
+
+The app integrates with a RESTful API backend. Key endpoints:
+
+- **Auth**: `/auth/login`, `/auth/register`, `/auth/refresh`
+- **Words**: `/words/search`, `/words/autocomplete`, `/words/{id}`
+- **Packs**: `/packs`, `/packs/{id}`, `/packs/subscribe`
+- **Quiz**: `/quiz/start`, `/quiz/submit`, `/quiz/leaderboard`
+- **Posts**: `/posts`, `/posts/{id}`, `/posts/like`
+- **Analytics**: `/analytics/stats`, `/analytics/progress`
+
+---
+
+## 🧪 Testing
+
+### Unit Tests
+
+```sh
+pnpm test
+pnpm test:watch
+```
+
+### E2E Tests
+
+```sh
+# Install Maestro
+pnpm install-maestro
+
+# Run E2E tests
+pnpm e2e-test
+```
+
+---
+
+## 🚢 Deployment
+
+### EAS Build & Submit
+
+The project uses [Expo Application Services (EAS)](https://docs.expo.dev/eas/) for building and deploying:
+
+```sh
+# Build for app stores
+eas build --platform ios --profile production
+eas build --platform android --profile production
+
+# Submit to stores
+eas submit --platform ios
+eas submit --platform android
+```
+
+### Over-the-Air Updates
+
+```sh
+# Publish updates
+eas update --branch production
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Follow the code style (run `pnpm lint` and `pnpm type-check`)
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+### Code Style Guidelines
+
+- Use TypeScript for all new code
+- Follow the existing project structure
+- Write unit tests for new features
+- Keep functions under 90 lines
+- Use functional components with hooks
+- Follow REST API design rules (see user rules)
+
+---
+
+## 📖 Documentation
+
+For more detailed documentation, see:
+
+- [Obytes Starter Documentation](https://starter.obytes.com)
+- [Expo Router Docs](https://docs.expo.dev/router/introduction/)
+- [NativeWind v4 Docs](https://www.nativewind.dev/v4/overview)
+- [React Query Docs](https://tanstack.com/query/latest)
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Metro bundler issues**
+
+```sh
+# Clear cache and restart
+pnpm start --clear
+```
+
+**Build failures**
+
+```sh
+# Clean and rebuild
+rm -rf node_modules
+pnpm install
+pnpm prebuild --clean
+```
+
+**iOS pod install issues**
+
+```sh
+cd ios
+pod deintegrate
+pod install
+cd ..
+```
+
+---
+
+## 📄 License
+
+This project is **MIT licensed**.
+
+---
+
+## 👨‍💻 Author
+
+**Md Efazul Karim**
+
+- GitHub: [@efazulkarim](https://github.com/efazulkarim)
+- Project: [vocab-mobile-ui](https://github.com/efazulkarim/vocab-mobile-ui)
+
+---
+
+## 🙏 Acknowledgments
+
+- Built on [Obytes React Native Starter](https://starter.obytes.com)
+- Icons by [Lucide Icons](https://lucide.dev/)
+- Animations powered by [Reanimated](https://docs.swmansion.com/react-native-reanimated/)
+
+---
+
+<p align="center">Made with ❤️ and ☕ by the Wordrizz Team</p>

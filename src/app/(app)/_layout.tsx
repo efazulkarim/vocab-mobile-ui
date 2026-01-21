@@ -4,6 +4,7 @@ import React, { useCallback, useEffect } from 'react';
 
 import {
   Feed as FeedIcon,
+  Rate as RateIcon,
   Settings as SettingsIcon,
   Style as StyleIcon,
 } from '@/components/ui/icons';
@@ -64,6 +65,15 @@ export default function TabLayout() {
           headerShown: false,
           tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
           tabBarButtonTestID: 'settings-tab',
+        }}
+      />
+      <Tabs.Screen
+        name="review"
+        options={{
+          title: 'Review',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <RateIcon color={color} />,
+          tabBarButtonTestID: 'review-tab',
         }}
       />
     </Tabs>

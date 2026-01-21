@@ -52,12 +52,14 @@ export default function RootLayout() {
       inAuthGroup
     ) {
       // Redirect to the sign-in page.
-      router.replace('/login');
+      requestAnimationFrame(() => {
+        router.replace('/login');
+      });
     } else if (status === 'signIn' && !inAuthGroup) {
       // Redirect to the home page.
-      router.replace('/(app)/');
-    } else if (status === 'idle') {
-      // Still hydrating
+      requestAnimationFrame(() => {
+        router.replace('/(app)/');
+      });
     }
   }, [status, segments, navigationState, router]);
 
@@ -68,6 +70,9 @@ export default function RootLayout() {
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="register" options={{ headerShown: false }} />
+        <Stack.Screen name="pack" options={{ headerShown: false }} />
+        <Stack.Screen name="word" options={{ headerShown: false }} />
+        <Stack.Screen name="quiz" options={{ headerShown: false }} />
       </Stack>
     </Providers>
   );

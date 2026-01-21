@@ -1,3 +1,4 @@
+import { Languages } from 'lucide-react-native';
 import * as React from 'react';
 
 import type { OptionType } from '@/components/ui';
@@ -36,6 +37,12 @@ export const LanguageItem = () => {
       <Item
         text="settings.language"
         value={selectedLanguage?.label}
+        icon={
+          <Languages
+            size={24}
+            color={language === 'ar' ? '#737373' : '#737373'}
+          />
+        }
         onPress={modal.present}
       />
       <Options

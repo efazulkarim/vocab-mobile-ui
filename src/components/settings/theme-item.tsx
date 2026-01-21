@@ -1,3 +1,4 @@
+import { Palette } from 'lucide-react-native';
 import React from 'react';
 
 import type { OptionType } from '@/components/ui';
@@ -38,6 +39,12 @@ export const ThemeItem = () => {
       <Item
         text="settings.theme.title"
         value={theme?.label}
+        icon={
+          <Palette
+            size={24}
+            color={selectedTheme === 'dark' ? '#9ca3af' : '#737373'}
+          />
+        }
         onPress={modal.present}
       />
       <Options

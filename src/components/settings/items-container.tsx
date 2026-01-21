@@ -13,7 +13,7 @@ export const ItemsContainer = ({ children, title }: Props) => {
     <>
       {title && <Text className="pb-2 pt-4 text-lg" tx={title} />}
       {
-        <View className=" rounded-md border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
+        <View className="overflow-hidden rounded-2xl bg-white shadow-sm dark:bg-neutral-900">
           {children}
         </View>
       }
